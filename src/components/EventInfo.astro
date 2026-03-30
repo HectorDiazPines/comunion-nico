@@ -1,0 +1,184 @@
+---
+/** Texto fijo del evento; enlaces a Maps se generan para móvil (dir + búsqueda). */
+const church = {
+  title: "Ceremonia religiosa",
+  place: "Iglesia de Santa María",
+  lines: [
+    "Av. de la Ilustración, 8",
+    "Casablanca, 50012 Zaragoza",
+  ] as const,
+  mapsQuery: "Iglesia de Santa María, Av. de la Ilustración, 8, Casablanca, 50012 Zaragoza",
+  time: "11:00 h",
+};
+
+const venue = {
+  title: "Comida / celebración",
+  place: "Espacio Emboca",
+  subtitle: "Espacio privado para eventos en Zaragoza",
+  lines: ["P.º de la Noria, 3", "50018 Zaragoza"] as const,
+  mapsQuery: "Espacio Emboca, P.º de la Noria, 3, 50018 Zaragoza",
+  time: "14:30 h",
+};
+
+function isUsableMapUrl(url: string | undefined): boolean {
+  return Boolean(url?.trim() && !url.includes("..."));
+}
+
+function directionsUrl(query: string): string {
+  return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(query)}`;
+}
+
+function openMapsUrl(query: string): string {
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+}
+
+const churchEmbed = import.meta.env.PUBLIC_MAPS_CHURCH_EMBED_URL;
+const venueEmbed = import.meta.env.PUBLIC_MAPS_VENUE_EMBED_URL;
+const churchImage = import.meta.env.PUBLIC_MAPS_CHURCH_IMAGE_URL;
+const venueImage = import.meta.env.PUBLIC_MAPS_VENUE_IMAGE_URL;
+---
+
+<section class="max-w-3xl mx-auto px-4 py-16 sm:py-20 text-center fade-in-section">
+  <h2 class="font-heading text-2xl sm:text-3xl md:text-4xl text-brown-dark mb-8 sm:mb-10">Detalles del evento</h2>
+
+  <div class="grid sm:grid-cols-2 gap-4 sm:gap-6 md:gap-8 mb-10 sm:mb-12 text-left">
+    <!-- Ceremonia -->
+    <div class="bg-cream-warm rounded-2xl p-6 sm:p-8 shadow-sm">
+      <div class="text-3xl sm:text-4xl mb-3 sm:mb-4 text-center sm:text-left">&#9963;</div>
+      <h3 class="font-heading text-lg sm:text-xl text-gold mb-2 text-center sm:text-left">{church.title}</h3>
+      <p class="text-brown-dark font-medium text-sm sm:text-base mb-1">{church.place}</p>
+      {church.lines.map((line) => <p class="text-gray-warm text-sm sm:text-base mb-0.5">{line}</p>)}
+      <p class="font-semibold text-brown-dark mt-3">{church.time}</p>
+      <div class="mt-4 flex flex-wrap gap-2 justify-center sm:justify-start">
+        <a
+          href={directionsUrl(church.mapsQuery)}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center justify-center rounded-full bg-gold px-4 py-2 text-sm font-semibold text-white hover:bg-gold-light transition-colors"
+        >
+          Cómo llegar
+        </a>
+        <a
+          href={openMapsUrl(church.mapsQuery)}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center justify-center rounded-full border-2 border-gold px-4 py-2 text-sm font-semibold text-gold hover:bg-gold/10 transition-colors"
+        >
+          Ver en Maps
+        </a>
+      </div>
+    </div>
+
+    <!-- Comida -->
+    <div class="bg-cream-warm rounded-2xl p-6 sm:p-8 shadow-sm">
+      <div class="text-3xl sm:text-4xl mb-3 sm:mb-4 text-center sm:text-left">&#127881;</div>
+      <h3 class="font-heading text-lg sm:text-xl text-gold mb-2 text-center sm:text-left">{venue.title}</h3>
+      <p class="text-brown-dark font-medium text-sm sm:text-base mb-0.5">{venue.place}</p>
+      <p class="text-gray-warm text-xs sm:text-sm mb-2">{venue.subtitle}</p>
+      {venue.lines.map((line) => <p class="text-gray-warm text-sm sm:text-base mb-0.5">{line}</p>)}
+      <p class="font-semibold text-brown-dark mt-3">{venue.time}</p>
+      <div class="mt-4 flex flex-wrap gap-2 justify-center sm:justify-start">
+        <a
+          href={directionsUrl(venue.mapsQuery)}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center justify-center rounded-full bg-gold px-4 py-2 text-sm font-semibold text-white hover:bg-gold-light transition-colors"
+        >
+          Cómo llegar
+        </a>
+        <a
+          href={openMapsUrl(venue.mapsQuery)}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center justify-center rounded-full border-2 border-gold px-4 py-2 text-sm font-semibold text-gold hover:bg-gold/10 transition-colors"
+        >
+          Ver en Maps
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mapas: imagen opcional (p. ej. captura o archivo en /public) + iframe opcional -->
+  <div class="space-y-10 text-left">
+    <div>
+      <h3 class="font-heading text-lg sm:text-xl text-brown-dark mb-3 text-center sm:text-left">
+        Iglesia — mapa
+      </h3>
+      {isUsableMapUrl(churchImage) && (
+        <a
+          href={directionsUrl(church.mapsQuery)}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="block rounded-2xl overflow-hidden shadow-sm mb-3 ring-1 ring-gold-lighter/40 focus:outline-none focus:ring-2 focus:ring-gold-light"
+        >
+          <img
+            src={churchImage.trim()}
+            alt="Mapa de la Iglesia de Santa María en Zaragoza"
+            class="w-full h-auto object-cover max-h-[220px] sm:max-h-[280px]"
+            loading="lazy"
+            width="800"
+            height="420"
+          />
+          <span class="sr-only">Abrir cómo llegar a la iglesia en Google Maps</span>
+        </a>
+      )}
+      {isUsableMapUrl(churchEmbed) && (
+        <div class="rounded-2xl overflow-hidden shadow-sm aspect-[4/3] sm:aspect-auto sm:h-[280px] min-h-[200px] ring-1 ring-gold-lighter/30">
+          <iframe
+            src={churchEmbed.trim()}
+            width="100%"
+            height="300"
+            class="h-full w-full min-h-[200px] sm:min-h-[280px]"
+            style="border:0"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Mapa embebido — Iglesia de Santa María"
+          ></iframe>
+        </div>
+      )}
+      <p class="text-gray-warm text-xs sm:text-sm text-center sm:text-left mt-3">
+        En el móvil, <strong class="text-brown-dark">Cómo llegar</strong> abre la navegación en Google Maps.
+      </p>
+    </div>
+
+    <div>
+      <h3 class="font-heading text-lg sm:text-xl text-brown-dark mb-3 text-center sm:text-left">
+        Espacio Emboca — mapa
+      </h3>
+      {isUsableMapUrl(venueImage) && (
+        <a
+          href={directionsUrl(venue.mapsQuery)}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="block rounded-2xl overflow-hidden shadow-sm mb-3 ring-1 ring-gold-lighter/40 focus:outline-none focus:ring-2 focus:ring-gold-light"
+        >
+          <img
+            src={venueImage.trim()}
+            alt="Mapa del Espacio Emboca en Zaragoza"
+            class="w-full h-auto object-cover max-h-[220px] sm:max-h-[280px]"
+            loading="lazy"
+            width="800"
+            height="420"
+          />
+          <span class="sr-only">Abrir cómo llegar a Espacio Emboca en Google Maps</span>
+        </a>
+      )}
+      {isUsableMapUrl(venueEmbed) && (
+        <div class="rounded-2xl overflow-hidden shadow-sm aspect-[4/3] sm:aspect-auto sm:h-[280px] min-h-[200px] ring-1 ring-gold-lighter/30">
+          <iframe
+            src={venueEmbed.trim()}
+            width="100%"
+            height="300"
+            class="h-full w-full min-h-[200px] sm:min-h-[280px]"
+            style="border:0"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Mapa embebido — Espacio Emboca"
+          ></iframe>
+        </div>
+      )}
+    </div>
+  </div>
+</section>

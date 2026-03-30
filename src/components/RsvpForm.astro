@@ -1,0 +1,126 @@
+---
+import RsvpSuccess from "./RsvpSuccess.astro";
+
+const webhookUrl = import.meta.env.PUBLIC_WEBHOOK_URL;
+---
+
+<section class="max-w-xl mx-auto px-4 py-16 sm:py-20 fade-in-section">
+  <div id="rsvp-form-wrapper">
+    <h2 class="font-heading text-2xl sm:text-3xl md:text-4xl text-brown-dark mb-2 text-center">
+      Confirma tu asistencia
+    </h2>
+    <p class="text-gray-warm text-center mb-8">
+      Rellena el formulario para que podamos preparar todo
+    </p>
+
+    <form id="rsvp-form" class="space-y-6">
+      <div>
+        <label for="name" class="block text-sm font-semibold text-brown-dark mb-1">
+          Nombre completo
+        </label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          required
+          class="w-full rounded-xl border border-gold-lighter bg-cream-warm px-4 py-3 text-brown-dark placeholder:text-gray-warm/50 focus:outline-none focus:ring-2 focus:ring-gold-light"
+          placeholder="Tu nombre"
+        />
+      </div>
+
+      <div>
+        <label for="guests" class="block text-sm font-semibold text-brown-dark mb-1">
+          Número de personas
+        </label>
+        <input
+          type="number"
+          id="guests"
+          name="guests"
+          min="1"
+          max="10"
+          value="1"
+          required
+          class="w-full rounded-xl border border-gold-lighter bg-cream-warm px-4 py-3 text-brown-dark focus:outline-none focus:ring-2 focus:ring-gold-light"
+        />
+      </div>
+
+      <div>
+        <label for="allergies" class="block text-sm font-semibold text-brown-dark mb-1">
+          Alergias o intolerancias
+        </label>
+        <input
+          type="text"
+          id="allergies"
+          name="allergies"
+          class="w-full rounded-xl border border-gold-lighter bg-cream-warm px-4 py-3 text-brown-dark placeholder:text-gray-warm/50 focus:outline-none focus:ring-2 focus:ring-gold-light"
+          placeholder="Ninguna, celiaco, etc."
+        />
+      </div>
+
+      <div>
+        <label for="message" class="block text-sm font-semibold text-brown-dark mb-1">
+          Mensaje (opcional)
+        </label>
+        <textarea
+          id="message"
+          name="message"
+          rows="3"
+          class="w-full rounded-xl border border-gold-lighter bg-cream-warm px-4 py-3 text-brown-dark placeholder:text-gray-warm/50 focus:outline-none focus:ring-2 focus:ring-gold-light resize-none"
+          placeholder="¡Un abrazo!"
+        ></textarea>
+      </div>
+
+      <button
+        type="submit"
+        id="rsvp-submit"
+        class="w-full bg-gold hover:bg-gold-light text-white font-semibold py-3 px-6 rounded-full transition-colors text-lg shadow-md cursor-pointer"
+      >
+        Confirmar asistencia
+      </button>
+
+      <p id="rsvp-error" class="hidden text-red-600 text-center text-sm mt-2"></p>
+    </form>
+  </div>
+
+  <RsvpSuccess />
+</section>
+
+<script define:vars={{ webhookUrl }}>
+  const form = document.getElementById("rsvp-form");
+  const submitBtn = document.getElementById("rsvp-submit");
+  const errorEl = document.getElementById("rsvp-error");
+  const formWrapper = document.getElementById("rsvp-form-wrapper");
+  const successEl = document.getElementById("rsvp-success");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    errorEl.classList.add("hidden");
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Enviando...";
+
+    const data = {
+      name: form.name.value.trim(),
+      guests: parseInt(form.guests.value, 10),
+      allergies: form.allergies.value.trim(),
+      message: form.message.value.trim(),
+      timestamp: new Date().toISOString(),
+    };
+
+    try {
+      await fetch(webhookUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+        mode: "no-cors",
+      });
+
+      formWrapper.classList.add("hidden");
+      successEl.classList.remove("hidden");
+    } catch (err) {
+      errorEl.textContent = "Error al enviar. Inténtalo de nuevo.";
+      errorEl.classList.remove("hidden");
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Confirmar asistencia";
+    }
+  });
+</script>
