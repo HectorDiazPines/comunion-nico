@@ -20,6 +20,11 @@ const venue = {
   time: "14:30 h",
 };
 
+const parking = {
+  name: "Parking Norte del Parque del Agua",
+  mapsQuery: "Parking Norte del Parque del Agua, Zaragoza",
+};
+
 function isUsableMapUrl(url: string | undefined): boolean {
   return Boolean(url?.trim() && !url.includes("..."));
 }
@@ -76,9 +81,6 @@ const venueImage = import.meta.env.PUBLIC_MAPS_VENUE_IMAGE_URL;
       <p class="text-brown-dark font-medium text-base mb-0.5">{venue.place}</p>
       <p class="text-gray-warm text-sm sm:text-sm mb-2">{venue.subtitle}</p>
       {venue.lines.map((line) => <p class="text-gray-warm text-base mb-0.5">{line}</p>)}
-      <p class="text-gray-warm text-sm mt-2">
-        Parking gratuito: <strong class="text-brown-dark font-medium">Parking Norte del Parque del Agua</strong>.
-      </p>
       <p class="font-semibold text-brown-dark mt-3">{venue.time}</p>
       <div class="mt-4 flex flex-wrap gap-2 justify-center sm:justify-start">
         <a
@@ -96,6 +98,19 @@ const venueImage = import.meta.env.PUBLIC_MAPS_VENUE_IMAGE_URL;
           class="inline-flex items-center justify-center rounded-full border-2 border-gold px-4 h-10 min-w-[9.5rem] text-sm font-semibold text-gold hover:bg-gold/10 transition-colors no-underline"
         >
           Ver en Maps
+        </a>
+      </div>
+      <p class="text-gray-warm text-sm mt-4">
+        Parking gratuito: <strong class="text-brown-dark font-medium">{parking.name}</strong>
+      </p>
+      <div class="mt-2 flex flex-wrap gap-2 justify-center sm:justify-start">
+        <a
+          href={directionsUrl(parking.mapsQuery)}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center justify-center rounded-full bg-gold px-4 h-10 min-w-[9.5rem] text-sm font-semibold text-white hover:bg-gold-light transition-colors no-underline"
+        >
+          Cómo llegar al parking
         </a>
       </div>
     </div>
