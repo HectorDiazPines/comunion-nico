@@ -1,21 +1,45 @@
 ---
 import RsvpSuccess from "./RsvpSuccess.astro";
 
-const webhookUrl = import.meta.env.PUBLIC_WEBHOOK_URL;
+/** Uno o varios números separados por coma (34…). Solo se usa el primero para el botón principal. */
+const rawNumbers =
+  import.meta.env.PUBLIC_RSVP_WHATSAPP_NUMBERS ?? import.meta.env.PUBLIC_WHATSAPP_NUMBER ?? "";
+
+const whatsappList = rawNumbers
+  .split(",")
+  .map((s) => s.replace(/\D/g, ""))
+  .filter((n) => n.length >= 9);
+
+/** Un solo destino para “Enviar” (p. ej. solo el móvil indicado en .env) */
+const rsvpPhonePrimary = whatsappList[0] ?? "";
+
+const rsvpEmail = (import.meta.env.PUBLIC_RSVP_EMAIL ?? "").trim();
+const hasWhatsapp = rsvpPhonePrimary.length >= 9;
+const hasEmail = rsvpEmail.includes("@");
 ---
 
-<section class="max-w-xl mx-auto px-4 py-16 sm:py-20 fade-in-section">
+<section class="max-w-xl mx-auto w-full py-20 sm:py-24 fade-in-section">
   <div id="rsvp-form-wrapper">
-    <h2 class="font-heading text-2xl sm:text-3xl md:text-4xl text-brown-dark mb-2 text-center">
+    <h2 class="font-heading text-3xl sm:text-4xl md:text-5xl text-brown-dark mb-3 text-center">
       Confirma tu asistencia
     </h2>
-    <p class="text-gray-warm text-center mb-8">
-      Rellena el formulario para que podamos preparar todo
+    <p class="text-gray-warm text-center mb-4 text-base sm:text-lg leading-relaxed">
+      Rellena los datos y pulsa <strong class="text-brown-dark">Enviar</strong>. En el móvil suele abrirse el mensaje ya
+      escrito; solo tienes que confirmarlo. También puedes usar <strong class="text-brown-dark">correo</strong> si lo
+      prefieres.
     </p>
+    {
+      !hasWhatsapp && !hasEmail && (
+        <p class="text-amber-800 bg-amber-50 border border-amber-200/80 rounded-xl px-4 py-3.5 text-base text-center mb-6">
+          Configura en <code class="text-sm">.env</code> <code>PUBLIC_RSVP_WHATSAPP_NUMBERS</code> o{" "}
+          <code>PUBLIC_RSVP_EMAIL</code>.
+        </p>
+      )
+    }
 
     <form id="rsvp-form" class="space-y-6">
       <div>
-        <label for="name" class="block text-sm font-semibold text-brown-dark mb-1">
+        <label for="name" class="block text-base font-semibold text-brown-dark mb-1.5">
           Nombre completo
         </label>
         <input
@@ -23,13 +47,13 @@ const webhookUrl = import.meta.env.PUBLIC_WEBHOOK_URL;
           id="name"
           name="name"
           required
-          class="w-full rounded-xl border border-gold-lighter bg-cream-warm px-4 py-3 text-brown-dark placeholder:text-gray-warm/50 focus:outline-none focus:ring-2 focus:ring-gold-light"
+          class="w-full min-h-[2.875rem] rounded-xl border border-gold-lighter bg-cream-warm px-4 py-3.5 text-base text-brown-dark placeholder:text-gray-warm/50 focus:outline-none focus:ring-2 focus:ring-gold-light"
           placeholder="Tu nombre"
         />
       </div>
 
       <div>
-        <label for="guests" class="block text-sm font-semibold text-brown-dark mb-1">
+        <label for="guests" class="block text-base font-semibold text-brown-dark mb-1.5">
           Número de personas
         </label>
         <input
@@ -37,90 +61,180 @@ const webhookUrl = import.meta.env.PUBLIC_WEBHOOK_URL;
           id="guests"
           name="guests"
           min="1"
-          max="10"
+          max="20"
           value="1"
           required
-          class="w-full rounded-xl border border-gold-lighter bg-cream-warm px-4 py-3 text-brown-dark focus:outline-none focus:ring-2 focus:ring-gold-light"
+          class="w-full min-h-[2.875rem] rounded-xl border border-gold-lighter bg-cream-warm px-4 py-3.5 text-base text-brown-dark focus:outline-none focus:ring-2 focus:ring-gold-light"
         />
       </div>
 
       <div>
-        <label for="allergies" class="block text-sm font-semibold text-brown-dark mb-1">
+        <label for="allergies" class="block text-base font-semibold text-brown-dark mb-1.5">
           Alergias o intolerancias
         </label>
         <input
           type="text"
           id="allergies"
           name="allergies"
-          class="w-full rounded-xl border border-gold-lighter bg-cream-warm px-4 py-3 text-brown-dark placeholder:text-gray-warm/50 focus:outline-none focus:ring-2 focus:ring-gold-light"
+          class="w-full min-h-[2.875rem] rounded-xl border border-gold-lighter bg-cream-warm px-4 py-3.5 text-base text-brown-dark placeholder:text-gray-warm/50 focus:outline-none focus:ring-2 focus:ring-gold-light"
           placeholder="Ninguna, celiaco, etc."
         />
       </div>
 
       <div>
-        <label for="message" class="block text-sm font-semibold text-brown-dark mb-1">
+        <label for="message" class="block text-base font-semibold text-brown-dark mb-1.5">
           Mensaje (opcional)
         </label>
         <textarea
           id="message"
           name="message"
-          rows="3"
-          class="w-full rounded-xl border border-gold-lighter bg-cream-warm px-4 py-3 text-brown-dark placeholder:text-gray-warm/50 focus:outline-none focus:ring-2 focus:ring-gold-light resize-none"
+          rows="4"
+          class="w-full rounded-xl border border-gold-lighter bg-cream-warm px-4 py-3.5 text-base text-brown-dark placeholder:text-gray-warm/50 focus:outline-none focus:ring-2 focus:ring-gold-light resize-none"
           placeholder="¡Un abrazo!"
         ></textarea>
       </div>
 
-      <button
-        type="submit"
-        id="rsvp-submit"
-        class="w-full bg-gold hover:bg-gold-light text-white font-semibold py-3 px-6 rounded-full transition-colors text-lg shadow-md cursor-pointer"
-      >
-        Confirmar asistencia
-      </button>
+      <div class="flex flex-col gap-3">
+        {
+          hasWhatsapp && (
+            <button
+              type="submit"
+              id="rsvp-submit-send"
+              data-channel="whatsapp"
+              data-phone={rsvpPhonePrimary}
+              class="w-full bg-gold hover:bg-gold-light text-white font-semibold py-3.5 px-6 rounded-full transition-colors text-xl shadow-md cursor-pointer"
+            >
+              Enviar
+            </button>
+          )
+        }
+        {
+          hasEmail && (
+            <button
+              type="submit"
+              id="rsvp-submit-mail"
+              data-channel="email"
+              class:list={[
+                "w-full font-semibold py-3 px-6 rounded-full transition-colors shadow-md cursor-pointer border-2 border-gold text-gold hover:bg-gold/10",
+                hasWhatsapp ? "text-lg py-3" : "bg-gold hover:bg-gold-light text-white border-transparent text-xl py-3.5",
+              ]}
+            >
+              Enviar por correo
+            </button>
+          )
+        }
+      </div>
 
-      <p id="rsvp-error" class="hidden text-red-600 text-center text-sm mt-2"></p>
+      <p id="rsvp-error" class="hidden text-red-600 text-center text-base mt-2"></p>
     </form>
   </div>
 
-  <RsvpSuccess />
+  <RsvpSuccess rsvpPhone={rsvpPhonePrimary} rsvpEmail={rsvpEmail} />
 </section>
 
-<script define:vars={{ webhookUrl }}>
+<script
+  define:vars={{
+    hasWhatsapp,
+    hasEmail,
+    rsvpEmail,
+    rsvpPhonePrimary,
+  }}
+>
+  function buildRsvpText(getters) {
+    const name = getters.name?.trim() || "";
+    const guests = String(getters.guests ?? "1");
+    const allergies = getters.allergies?.trim() || "Ninguna";
+    const message = getters.message?.trim() || "";
+
+    const lines = [
+      "*Comunión de Nicolás*",
+      "*Confirmación de asistencia*",
+      "",
+      "────────────────",
+      "",
+      "👤 *Nombre completo*",
+      name,
+      "",
+      "👥 *Personas*",
+      `${guests} (incluido quien escribe, si aplica)`,
+      "",
+      "🥗 *Alergias o intolerancias*",
+      allergies,
+      "",
+    ];
+
+    if (message) {
+      lines.push("💬 *Mensaje*", "", message, "");
+    }
+
+    lines.push("────────────────", "", "📱 Enviado desde la invitación web.");
+
+    return lines.join("\n");
+  }
+
   const form = document.getElementById("rsvp-form");
-  const submitBtn = document.getElementById("rsvp-submit");
   const errorEl = document.getElementById("rsvp-error");
   const formWrapper = document.getElementById("rsvp-form-wrapper");
   const successEl = document.getElementById("rsvp-success");
 
-  form.addEventListener("submit", async (e) => {
+  function showSuccess() {
+    formWrapper?.classList.add("hidden");
+    successEl?.classList.remove("hidden");
+  }
+
+  form?.addEventListener("submit", (e) => {
     e.preventDefault();
-    errorEl.classList.add("hidden");
-    submitBtn.disabled = true;
-    submitBtn.textContent = "Enviando...";
+    errorEl?.classList.add("hidden");
+
+    const submitter = /** @type {HTMLButtonElement | null} */ (e.submitter);
+    const channel =
+      submitter?.getAttribute?.("data-channel") ||
+      (hasWhatsapp ? "whatsapp" : hasEmail ? "email" : "");
+    let phone =
+      submitter?.getAttribute?.("data-phone")?.replace(/\D/g, "") ||
+      String(rsvpPhonePrimary || "").replace(/\D/g, "");
 
     const data = {
-      name: form.name.value.trim(),
-      guests: parseInt(form.guests.value, 10),
-      allergies: form.allergies.value.trim(),
-      message: form.message.value.trim(),
-      timestamp: new Date().toISOString(),
+      name: /** @type {HTMLInputElement} */ (form.querySelector("#name")).value,
+      guests: /** @type {HTMLInputElement} */ (form.querySelector("#guests")).value,
+      allergies: /** @type {HTMLInputElement} */ (form.querySelector("#allergies")).value,
+      message: /** @type {HTMLTextAreaElement} */ (form.querySelector("#message")).value,
     };
 
-    try {
-      await fetch(webhookUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-        mode: "no-cors",
-      });
-
-      formWrapper.classList.add("hidden");
-      successEl.classList.remove("hidden");
-    } catch (err) {
-      errorEl.textContent = "Error al enviar. Inténtalo de nuevo.";
-      errorEl.classList.remove("hidden");
-      submitBtn.disabled = false;
-      submitBtn.textContent = "Confirmar asistencia";
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
     }
+
+    const text = buildRsvpText({
+      name: data.name,
+      guests: data.guests,
+      allergies: data.allergies,
+      message: data.message,
+    });
+
+    if (channel === "whatsapp" && hasWhatsapp && phone) {
+      const url = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
+      const opened = window.open(url, "_blank", "noopener,noreferrer");
+      if (!opened) {
+        errorEl.textContent = "Permite ventanas emergentes en el navegador o prueba desde el móvil.";
+        errorEl.classList.remove("hidden");
+        return;
+      }
+      showSuccess();
+      return;
+    }
+
+    if (channel === "email" && hasEmail) {
+      const subject = encodeURIComponent("RSVP — Comunión Nicolás");
+      const plain = text.replace(/\*/g, "").replace(/👤|👥|🥗|💬|📱|─/g, "").replace(/\n\n\n+/g, "\n\n");
+      const body = encodeURIComponent(plain);
+      window.location.href = `mailto:${rsvpEmail}?subject=${subject}&body=${body}`;
+      showSuccess();
+      return;
+    }
+
+    errorEl.textContent = "Falta configurar el envío en el sitio.";
+    errorEl.classList.remove("hidden");
   });
 </script>

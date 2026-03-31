@@ -2,84 +2,69 @@
 ---
 
 <section
-  data-hero-parallax
-  class="relative min-h-screen min-h-[100dvh] flex flex-col items-center justify-center text-center px-4 sm:px-6 bg-cream-warm overflow-hidden"
+  class="relative min-h-screen min-h-[100dvh] flex flex-col items-center justify-center text-center px-0 bg-cream-warm overflow-x-hidden"
 >
-  <!-- Decorative parallax: JS mueve los wrappers al hacer scroll por el hero -->
-  <div class="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
-    <span
-      class="hero-parallax-wrap top-[12%] left-[8%] sm:left-[10%]"
-      data-parallax-layer
-      data-parallax-speed="1"
-    >
-      <span class="text-gold-lighter/30 text-xl sm:text-2xl float-element block">&#10022;</span>
+  <!-- Resplandor dorado suave (respira, no invade) -->
+  <div
+    class="hero-fantasy-glow pointer-events-none absolute left-1/2 top-[38%] z-0 h-[min(85vh,38rem)] w-[min(118vw,52rem)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(212,160,23,0.16)_0%,rgba(240,215,140,0.08)_42%,transparent_72%)]"
+    aria-hidden="true"
+  ></div>
+
+  <!-- Decoración estática con ligera animación flotante -->
+  <div class="absolute inset-0 z-[1] pointer-events-none overflow-hidden" aria-hidden="true">
+    <span class="hero-parallax-wrap top-[12%] left-[8%] sm:left-[10%]">
+      <span class="text-gold-lighter/35 text-2xl sm:text-2xl float-element block">&#10022;</span>
     </span>
-    <span
-      class="hero-parallax-wrap top-[18%] right-[10%] sm:right-[15%]"
-      data-parallax-layer
-      data-parallax-speed="0.55"
-    >
-      <span class="text-gold-lighter/20 text-2xl sm:text-3xl float-element-delayed block">&#10022;</span>
+    <span class="hero-parallax-wrap top-[18%] right-[10%] sm:right-[15%]">
+      <span class="text-gold-lighter/26 text-3xl sm:text-3xl float-element-delayed block">&#10022;</span>
     </span>
-    <span
-      class="hero-parallax-wrap bottom-[28%] left-[6%] sm:left-[8%]"
-      data-parallax-layer
-      data-parallax-speed="0.35"
-    >
-      <span class="text-gold-lighter/25 text-lg sm:text-xl float-element block">&#10022;</span>
+    <span class="hero-parallax-wrap bottom-[28%] left-[6%] sm:left-[8%]">
+      <span class="text-gold-lighter/32 text-2xl sm:text-xl float-element block">&#10022;</span>
     </span>
-    <span
-      class="hero-parallax-wrap bottom-[22%] right-[8%] sm:right-[12%]"
-      data-parallax-layer
-      data-parallax-speed="0.55"
-    >
-      <span class="text-gold-lighter/30 text-xl sm:text-2xl float-element-delayed block">&#10022;</span>
+    <span class="hero-parallax-wrap bottom-[22%] right-[8%] sm:right-[12%]">
+      <span class="text-gold-lighter/32 text-2xl sm:text-2xl float-element-delayed block">&#10022;</span>
     </span>
-    <span
-      class="hero-parallax-wrap top-[38%] right-[4%] sm:right-[5%]"
-      data-parallax-layer
-      data-parallax-speed="1"
-    >
-      <span class="text-gold-lighter/15 text-3xl sm:text-4xl float-element block">&#10022;</span>
+    <span class="hero-parallax-wrap top-[38%] right-[4%] sm:right-[5%]">
+      <span class="text-gold-lighter/22 text-4xl sm:text-4xl float-element block">&#10022;</span>
     </span>
-    <span
-      class="hero-parallax-wrap top-[58%] left-[4%] sm:left-[5%]"
-      data-parallax-layer
-      data-parallax-speed="0.35"
-    >
-      <span class="text-gold-lighter/20 text-2xl sm:text-3xl float-element-delayed block">&#10022;</span>
+    <span class="hero-parallax-wrap top-[58%] left-[4%] sm:left-[5%]">
+      <span class="text-gold-lighter/26 text-3xl sm:text-3xl float-element-delayed block">&#10022;</span>
     </span>
 
     <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-cream/50"></div>
   </div>
 
-  <!-- Main content -->
-  <div class="relative z-10">
-    <p class="text-gold-light tracking-[0.2em] sm:tracking-[0.3em] uppercase text-xs sm:text-sm mb-4 sm:mb-6">
+  <!-- Main content: un poco más arriba en la pantalla; Parisienne necesita espacio vertical -->
+  <div
+    class="relative z-10 w-full max-w-[min(100%,32rem)] sm:max-w-none px-0.5 py-4 -translate-y-5 sm:-translate-y-8 md:-translate-y-10"
+  >
+    <p class="text-gold-light tracking-[0.2em] sm:tracking-[0.3em] uppercase text-base sm:text-sm mb-4 sm:mb-6 font-medium">
       Estás invitado a la
     </p>
-    <h1 class="font-heading text-[clamp(1.75rem,6vw,4.5rem)] sm:text-5xl md:text-7xl text-brown-dark mb-2 sm:mb-3 leading-tight">
+    <h1
+      class="font-heading text-[clamp(2.55rem,calc(7.5vw+1.1rem),4.75rem)] sm:text-5xl md:text-7xl text-brown-dark mb-3 sm:mb-4 leading-[1.08] sm:leading-tight"
+    >
       Primera Comunión
     </h1>
-    <p class="font-heading text-[clamp(1.35rem,4.5vw,3rem)] sm:text-3xl md:text-5xl text-gold mb-6 sm:mb-8">de Nico</p>
+    <p
+      class="font-fantasy text-[clamp(3.4rem,calc(12.5vw+1rem),5.5rem)] text-gold leading-[1.15] pb-1 min-h-[1.2em] drop-shadow-[0_2px_12px_rgba(184,134,11,0.25)]"
+      aria-label="Nicolás Díaz-Pinés Romero"
+    >
+      Nicolás
+    </p>
+    <p
+      class="font-fantasy text-gold text-[clamp(2.05rem,calc(8.2vw+0.7rem),3.5rem)] leading-[1.12] text-balance mb-3 sm:mb-4 mt-0.5 drop-shadow-[0_2px_10px_rgba(184,134,11,0.2)]"
+    >
+      Díaz-Pinés Romero
+    </p>
     <div
-      class="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 sm:gap-4 text-gray-warm text-sm sm:text-base md:text-lg max-w-[22rem] sm:max-w-none mx-auto"
+      class="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 sm:gap-4 max-w-[24rem] sm:max-w-none mx-auto"
     >
       <span class="h-px w-8 sm:w-12 bg-gold-lighter shrink-0 max-sm:hidden"></span>
-      <time class="text-balance" datetime="2026-05-16">Sábado, 16 de mayo de 2026</time>
+      <time
+        class="text-balance font-heading font-bold text-brown-dark text-xl sm:text-lg md:text-xl tracking-[0.03em] leading-tight [text-shadow:0_1px_0_rgba(255,253,247,0.95),0_2px_16px_rgba(184,134,11,0.18),0_0_32px_rgba(212,160,23,0.12)]"
+        datetime="2026-05-16">Sábado, 16 de mayo de 2026</time>
       <span class="h-px w-8 sm:w-12 bg-gold-lighter shrink-0 max-sm:hidden"></span>
-    </div>
-  </div>
-
-  <!-- Scroll indicator -->
-  <div
-    class="absolute bottom-[max(1.25rem,env(safe-area-inset-bottom))] sm:bottom-8 left-1/2 -translate-x-1/2 max-sm:scale-90"
-  >
-    <div class="scroll-indicator flex flex-col items-center gap-1.5 sm:gap-2 text-gold-light/60">
-      <span class="text-[10px] sm:text-xs tracking-widest uppercase">Desliza</span>
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-      </svg>
     </div>
   </div>
 </section>
