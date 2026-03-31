@@ -209,13 +209,7 @@ const hasEmail = rsvpEmail.includes("@");
 
     if (channel === "whatsapp" && hasWhatsapp && phone) {
       const url = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
-      const opened = window.open(url, "_blank", "noopener,noreferrer");
-      if (!opened) {
-        errorEl.textContent = "Permite ventanas emergentes o prueba desde el móvil.";
-        errorEl.classList.remove("hidden");
-        return;
-      }
-      showSuccess();
+      window.location.href = url;
       return;
     }
 
