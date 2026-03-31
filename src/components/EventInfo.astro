@@ -38,7 +38,7 @@ const churchImage = import.meta.env.PUBLIC_MAPS_CHURCH_IMAGE_URL;
 const venueImage = import.meta.env.PUBLIC_MAPS_VENUE_IMAGE_URL;
 ---
 
-<section class="w-full py-20 sm:py-24 text-center fade-in-section">
+<section class="w-full py-2 text-center fade-in-section">
   <h2 class="font-heading text-3xl sm:text-4xl md:text-5xl text-brown-dark mb-8 sm:mb-10">Detalles del evento</h2>
 
   <div class="grid sm:grid-cols-2 gap-5 sm:gap-6 md:gap-8 mb-10 sm:mb-12 text-left">
@@ -54,7 +54,7 @@ const venueImage = import.meta.env.PUBLIC_MAPS_VENUE_IMAGE_URL;
           href={directionsUrl(church.mapsQuery)}
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center justify-center rounded-full bg-gold px-5 py-2.5 text-base font-semibold text-white hover:bg-gold-light transition-colors"
+          class="inline-flex items-center justify-center rounded-full bg-gold px-4 h-10 min-w-[9.5rem] text-sm font-semibold text-white hover:bg-gold-light transition-colors no-underline"
         >
           Cómo llegar
         </a>
@@ -62,7 +62,7 @@ const venueImage = import.meta.env.PUBLIC_MAPS_VENUE_IMAGE_URL;
           href={openMapsUrl(church.mapsQuery)}
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center justify-center rounded-full border-2 border-gold px-5 py-2.5 text-base font-semibold text-gold hover:bg-gold/10 transition-colors"
+          class="inline-flex items-center justify-center rounded-full border-2 border-gold px-4 h-10 min-w-[9.5rem] text-sm font-semibold text-gold hover:bg-gold/10 transition-colors no-underline"
         >
           Ver en Maps
         </a>
@@ -76,13 +76,16 @@ const venueImage = import.meta.env.PUBLIC_MAPS_VENUE_IMAGE_URL;
       <p class="text-brown-dark font-medium text-base mb-0.5">{venue.place}</p>
       <p class="text-gray-warm text-sm sm:text-sm mb-2">{venue.subtitle}</p>
       {venue.lines.map((line) => <p class="text-gray-warm text-base mb-0.5">{line}</p>)}
+      <p class="text-gray-warm text-sm mt-2">
+        Parking gratuito: <strong class="text-brown-dark font-medium">Parking Norte del Parque del Agua</strong>.
+      </p>
       <p class="font-semibold text-brown-dark mt-3">{venue.time}</p>
       <div class="mt-4 flex flex-wrap gap-2 justify-center sm:justify-start">
         <a
           href={directionsUrl(venue.mapsQuery)}
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center justify-center rounded-full bg-gold px-5 py-2.5 text-base font-semibold text-white hover:bg-gold-light transition-colors"
+          class="inline-flex items-center justify-center rounded-full bg-gold px-4 h-10 min-w-[9.5rem] text-sm font-semibold text-white hover:bg-gold-light transition-colors no-underline"
         >
           Cómo llegar
         </a>
@@ -90,7 +93,7 @@ const venueImage = import.meta.env.PUBLIC_MAPS_VENUE_IMAGE_URL;
           href={openMapsUrl(venue.mapsQuery)}
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center justify-center rounded-full border-2 border-gold px-5 py-2.5 text-base font-semibold text-gold hover:bg-gold/10 transition-colors"
+          class="inline-flex items-center justify-center rounded-full border-2 border-gold px-4 h-10 min-w-[9.5rem] text-sm font-semibold text-gold hover:bg-gold/10 transition-colors no-underline"
         >
           Ver en Maps
         </a>

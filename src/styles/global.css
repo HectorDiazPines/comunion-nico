@@ -1,5 +1,19 @@
 @import "tailwindcss";
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+input,
+textarea,
+select,
+button {
+  max-width: 100%;
+  min-width: 0;
+}
+
 @theme {
   --color-cream: #fffdf7;
   --color-cream-warm: #fefcf9;
@@ -19,10 +33,10 @@
   font-family: var(--font-fantasy), cursive;
 }
 
-/* Móvil: base amplia (~21–22px con navegador a 16px) para pantallas tipo iPhone */
+/* Móvil: base estándar para evitar overflow */
 @media (max-width: 639px) {
   html {
-    font-size: 132%;
+    font-size: 100%;
   }
 }
 
@@ -63,27 +77,13 @@ h1 {
 
 @media (max-width: 639px) {
   h2 {
-    font-size: 2.125rem;
-    line-height: 1.18;
+    font-size: 1.75rem;
+    line-height: 1.2;
   }
 
   h3 {
-    font-size: 1.5rem;
-    line-height: 1.22;
-  }
-}
-
-/* Parallax background layer (fixed suele fallar en móvil/iOS) */
-.parallax-bg {
-  background-attachment: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
-@media (max-width: 768px), (hover: none) and (pointer: coarse) {
-  .parallax-bg {
-    background-attachment: scroll;
+    font-size: 1.25rem;
+    line-height: 1.25;
   }
 }
 
@@ -149,8 +149,8 @@ h1 {
   }
 }
 
-/* Capas decorativas del hero (flotación CSS; sin parallax por scroll) */
-.hero-parallax-wrap {
+/* Capas decorativas del hero (flotación CSS) */
+.hero-float-wrap {
   position: absolute;
   pointer-events: none;
 }

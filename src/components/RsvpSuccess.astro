@@ -10,35 +10,35 @@ const hasWa = phoneClean.length >= 9;
 const hasMail = rsvpEmail.includes("@");
 ---
 
-<div id="rsvp-success" class="hidden text-center py-14 px-0">
-  <div class="text-7xl mb-6">&#127881;</div>
-  <h3 class="font-heading text-3xl sm:text-4xl text-brown-dark mb-4">¡Listo!</h3>
-  <p class="text-gray-warm text-xl mb-6 max-w-md mx-auto leading-relaxed">
+<div id="rsvp-success" class="hidden bg-cream-warm rounded-2xl px-4 py-6 sm:px-6 sm:py-8 shadow-sm text-center">
+  <div class="text-5xl mb-4">&#127881;</div>
+  <h3 class="font-heading text-2xl sm:text-3xl text-brown-dark mb-3">¡Listo!</h3>
+  <p class="text-gray-warm text-sm sm:text-base mb-5 leading-relaxed">
     <strong class="text-brown-dark">Último paso:</strong> revisa el texto que se ha generado y confirma el envío en la
     pantalla que se haya abierto.
   </p>
   {
     hasWa && (
-      <p class="text-gray-warm text-base mb-6 max-w-md mx-auto">
+      <p class="text-gray-warm text-sm mb-3">
         <a
           href={`https://wa.me/${phoneClean}`}
-          class="text-gold underline underline-offset-2"
+          class="text-gold underline underline-offset-2 hover:text-gold-light"
           target="_blank"
           rel="noopener noreferrer"
         >
           Volver a abrir el envío
         </a>
-        <span class="text-gray-warm"> · si no se abrió antes</span>
+        <span class="text-gray-warm/80"> · si no se abrió antes</span>
       </p>
     )
   }
   {
     hasMail && (
-      <p class="text-gray-warm text-base mb-2">
-        <a href={`mailto:${rsvpEmail}`} class="text-gold underline underline-offset-2">
+      <p class="text-gray-warm text-sm">
+        <a href={`mailto:${rsvpEmail}`} class="text-gold underline underline-offset-2 hover:text-gold-light">
           Correo
         </a>
-        <span class="text-gray-warm"> · alternativa</span>
+        <span class="text-gray-warm/80"> · alternativa</span>
       </p>
     )
   }

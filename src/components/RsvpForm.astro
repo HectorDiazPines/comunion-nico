@@ -1,7 +1,6 @@
 ---
 import RsvpSuccess from "./RsvpSuccess.astro";
 
-/** Uno o varios números separados por coma (34…). Solo se usa el primero para el botón principal. */
 const rawNumbers =
   import.meta.env.PUBLIC_RSVP_WHATSAPP_NUMBERS ?? import.meta.env.PUBLIC_WHATSAPP_NUMBER ?? "";
 
@@ -10,52 +9,45 @@ const whatsappList = rawNumbers
   .map((s) => s.replace(/\D/g, ""))
   .filter((n) => n.length >= 9);
 
-/** Un solo destino para “Enviar” (p. ej. solo el móvil indicado en .env) */
 const rsvpPhonePrimary = whatsappList[0] ?? "";
-
 const rsvpEmail = (import.meta.env.PUBLIC_RSVP_EMAIL ?? "").trim();
 const hasWhatsapp = rsvpPhonePrimary.length >= 9;
 const hasEmail = rsvpEmail.includes("@");
 ---
 
-<section class="max-w-xl mx-auto w-full py-20 sm:py-24 fade-in-section">
+<section class="py-2 fade-in-section">
+  <h2 class="font-heading text-3xl sm:text-4xl md:text-5xl text-brown-dark mb-6 sm:mb-8 text-center">
+    Confirma tu asistencia
+  </h2>
+
   <div id="rsvp-form-wrapper">
-    <h2 class="font-heading text-3xl sm:text-4xl md:text-5xl text-brown-dark mb-3 text-center">
-      Confirma tu asistencia
-    </h2>
-    <p class="text-gray-warm text-center mb-4 text-base sm:text-lg leading-relaxed">
-      Rellena los datos y pulsa <strong class="text-brown-dark">Enviar</strong>. En el móvil suele abrirse el mensaje ya
-      escrito; solo tienes que confirmarlo. También puedes usar <strong class="text-brown-dark">correo</strong> si lo
-      prefieres.
+    <p class="text-gray-warm text-center mb-5 text-sm leading-relaxed">
+      Rellena los datos y pulsa <strong class="text-brown-dark">Enviar</strong>.
     </p>
+
     {
       !hasWhatsapp && !hasEmail && (
-        <p class="text-amber-800 bg-amber-50 border border-amber-200/80 rounded-xl px-4 py-3.5 text-base text-center mb-6">
-          Configura en <code class="text-sm">.env</code> <code>PUBLIC_RSVP_WHATSAPP_NUMBERS</code> o{" "}
-          <code>PUBLIC_RSVP_EMAIL</code>.
+        <p class="text-amber-800 bg-amber-50 border border-amber-200/80 rounded-lg p-3 text-sm text-center mb-5">
+          Configura en .env PUBLIC_RSVP_WHATSAPP_NUMBERS o PUBLIC_RSVP_EMAIL.
         </p>
       )
     }
 
-    <form id="rsvp-form" class="space-y-6">
-      <div>
-        <label for="name" class="block text-base font-semibold text-brown-dark mb-1.5">
-          Nombre completo
-        </label>
+    <form id="rsvp-form">
+      <div class="mb-4 pr-5">
+        <label for="name" class="block text-sm font-medium text-brown-dark mb-1">Nombre completo</label>
         <input
           type="text"
           id="name"
           name="name"
           required
-          class="w-full min-h-[2.875rem] rounded-xl border border-gold-lighter bg-cream-warm px-4 py-3.5 text-base text-brown-dark placeholder:text-gray-warm/50 focus:outline-none focus:ring-2 focus:ring-gold-light"
           placeholder="Tu nombre"
+          style="display:block; width:100%; height:40px; padding:0 8px; border:1px solid #f0d78c; border-radius:8px; background:#fff; font-size:14px; color:#3d260d; margin-right:1.25rem;"
         />
       </div>
 
-      <div>
-        <label for="guests" class="block text-base font-semibold text-brown-dark mb-1.5">
-          Número de personas
-        </label>
+      <div class="mb-4 pr-5">
+        <label for="guests" class="block text-sm font-medium text-brown-dark mb-1">Número de personas</label>
         <input
           type="number"
           id="guests"
@@ -64,37 +56,33 @@ const hasEmail = rsvpEmail.includes("@");
           max="20"
           value="1"
           required
-          class="w-full min-h-[2.875rem] rounded-xl border border-gold-lighter bg-cream-warm px-4 py-3.5 text-base text-brown-dark focus:outline-none focus:ring-2 focus:ring-gold-light"
+          style="display:block; width:100%; height:40px; padding:0 8px; border:1px solid #f0d78c; border-radius:8px; background:#fff; font-size:14px; color:#3d260d; margin-right:1.25rem;"
         />
       </div>
 
-      <div>
-        <label for="allergies" class="block text-base font-semibold text-brown-dark mb-1.5">
-          Alergias o intolerancias
-        </label>
-        <input
-          type="text"
+      <div class="mb-4 pr-5">
+        <label for="allergies" class="block text-sm font-medium text-brown-dark mb-1">Alergias o intolerancias</label>
+        <textarea
           id="allergies"
           name="allergies"
-          class="w-full min-h-[2.875rem] rounded-xl border border-gold-lighter bg-cream-warm px-4 py-3.5 text-base text-brown-dark placeholder:text-gray-warm/50 focus:outline-none focus:ring-2 focus:ring-gold-light"
+          rows="2"
           placeholder="Ninguna, celiaco, etc."
-        />
-      </div>
-
-      <div>
-        <label for="message" class="block text-base font-semibold text-brown-dark mb-1.5">
-          Mensaje (opcional)
-        </label>
-        <textarea
-          id="message"
-          name="message"
-          rows="4"
-          class="w-full rounded-xl border border-gold-lighter bg-cream-warm px-4 py-3.5 text-base text-brown-dark placeholder:text-gray-warm/50 focus:outline-none focus:ring-2 focus:ring-gold-light resize-none"
-          placeholder="¡Un abrazo!"
+          style="display:block; width:100%; padding:8px; border:1px solid #f0d78c; border-radius:8px; background:#fff; font-size:14px; color:#3d260d; resize:none; margin-right:1.25rem;"
         ></textarea>
       </div>
 
-      <div class="flex flex-col gap-3">
+      <div class="mb-4 pr-5">
+        <label for="message" class="block text-sm font-medium text-brown-dark mb-1">Mensaje (opcional)</label>
+        <textarea
+          id="message"
+          name="message"
+          rows="3"
+          placeholder="¡Un abrazo!"
+          style="display:block; width:100%; padding:8px; border:1px solid #f0d78c; border-radius:8px; background:#fff; font-size:14px; color:#3d260d; resize:none; margin-right:1.25rem;"
+        ></textarea>
+      </div>
+
+      <div class="flex flex-col gap-2">
         {
           hasWhatsapp && (
             <button
@@ -102,7 +90,8 @@ const hasEmail = rsvpEmail.includes("@");
               id="rsvp-submit-send"
               data-channel="whatsapp"
               data-phone={rsvpPhonePrimary}
-              class="w-full bg-gold hover:bg-gold-light text-white font-semibold py-3.5 px-6 rounded-full transition-colors text-xl shadow-md cursor-pointer"
+              style="border:none; outline:none;"
+              class="inline-flex items-center justify-center rounded-full bg-gold px-4 h-10 min-w-[9.5rem] text-sm font-semibold text-white hover:bg-gold-light transition-colors cursor-pointer"
             >
               Enviar
             </button>
@@ -115,8 +104,10 @@ const hasEmail = rsvpEmail.includes("@");
               id="rsvp-submit-mail"
               data-channel="email"
               class:list={[
-                "w-full font-semibold py-3 px-6 rounded-full transition-colors shadow-md cursor-pointer border-2 border-gold text-gold hover:bg-gold/10",
-                hasWhatsapp ? "text-lg py-3" : "bg-gold hover:bg-gold-light text-white border-transparent text-xl py-3.5",
+                "h-10 rounded-full text-sm font-semibold transition-colors cursor-pointer",
+                hasWhatsapp
+                  ? "border-2 border-gold text-gold hover:bg-gold/10"
+                  : "bg-gold text-white hover:bg-gold-light",
               ]}
             >
               Enviar por correo
@@ -125,12 +116,20 @@ const hasEmail = rsvpEmail.includes("@");
         }
       </div>
 
-      <p id="rsvp-error" class="hidden text-red-600 text-center text-base mt-2"></p>
+      <p id="rsvp-error" class="hidden text-red-600 text-center text-sm mt-3"></p>
     </form>
   </div>
 
   <RsvpSuccess rsvpPhone={rsvpPhonePrimary} rsvpEmail={rsvpEmail} />
 </section>
+
+<style>
+  #rsvp-form input:focus,
+  #rsvp-form textarea:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #d4a017;
+  }
+</style>
 
 <script
   define:vars={{
@@ -186,7 +185,7 @@ const hasEmail = rsvpEmail.includes("@");
     e.preventDefault();
     errorEl?.classList.add("hidden");
 
-    const submitter = /** @type {HTMLButtonElement | null} */ (e.submitter);
+    const submitter = e.submitter;
     const channel =
       submitter?.getAttribute?.("data-channel") ||
       (hasWhatsapp ? "whatsapp" : hasEmail ? "email" : "");
@@ -195,10 +194,10 @@ const hasEmail = rsvpEmail.includes("@");
       String(rsvpPhonePrimary || "").replace(/\D/g, "");
 
     const data = {
-      name: /** @type {HTMLInputElement} */ (form.querySelector("#name")).value,
-      guests: /** @type {HTMLInputElement} */ (form.querySelector("#guests")).value,
-      allergies: /** @type {HTMLInputElement} */ (form.querySelector("#allergies")).value,
-      message: /** @type {HTMLTextAreaElement} */ (form.querySelector("#message")).value,
+      name: form.querySelector("#name").value,
+      guests: form.querySelector("#guests").value,
+      allergies: form.querySelector("#allergies").value,
+      message: form.querySelector("#message").value,
     };
 
     if (!form.checkValidity()) {
@@ -206,18 +205,13 @@ const hasEmail = rsvpEmail.includes("@");
       return;
     }
 
-    const text = buildRsvpText({
-      name: data.name,
-      guests: data.guests,
-      allergies: data.allergies,
-      message: data.message,
-    });
+    const text = buildRsvpText(data);
 
     if (channel === "whatsapp" && hasWhatsapp && phone) {
       const url = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
       const opened = window.open(url, "_blank", "noopener,noreferrer");
       if (!opened) {
-        errorEl.textContent = "Permite ventanas emergentes en el navegador o prueba desde el móvil.";
+        errorEl.textContent = "Permite ventanas emergentes o prueba desde el móvil.";
         errorEl.classList.remove("hidden");
         return;
       }
@@ -234,7 +228,7 @@ const hasEmail = rsvpEmail.includes("@");
       return;
     }
 
-    errorEl.textContent = "Falta configurar el envío en el sitio.";
+    errorEl.textContent = "Falta configurar el envío.";
     errorEl.classList.remove("hidden");
   });
 </script>
