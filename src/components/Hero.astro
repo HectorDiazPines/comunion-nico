@@ -66,5 +66,47 @@
         datetime="2026-05-16">Sábado, 16 de mayo de 2026</time>
       <span class="h-px w-8 sm:w-12 bg-gold-lighter shrink-0 max-sm:hidden"></span>
     </div>
+
+    <!-- Cuenta atrás -->
+    <div id="countdown" class="mt-8 sm:mt-10 w-full mx-auto px-0">
+      <div id="countdown-boxes" class="flex justify-center gap-2 sm:gap-4">
+        {["días","horas","min","seg"].map((label, i) => (
+          <div class="flex flex-col items-center bg-cream-warm border border-gold-lighter/60 rounded-2xl px-1 sm:px-5 py-3 sm:py-4 shadow-sm w-[22vw] max-w-[5.5rem] sm:w-[5.5rem]">
+            <span id={`cd-${label}`} class="font-heading font-bold text-gold text-[6.5vw] sm:text-4xl leading-none tabular-nums">--</span>
+            <span class="text-gray-warm text-xs sm:text-sm mt-1 tracking-wide uppercase">{label}</span>
+          </div>
+        ))}
+      </div>
+      <p id="countdown-done" class="hidden font-heading text-gold text-xl sm:text-2xl mt-4">¡Hoy es el gran día! 🎉</p>
+    </div>
   </div>
 </section>
+
+<script>
+  const target = new Date("2026-05-16T12:00:00");
+
+  function update() {
+    const now = new Date();
+    const diff = target.getTime() - now.getTime();
+
+    if (diff <= 0) {
+      document.getElementById("countdown-boxes")?.classList.add("hidden");
+      document.getElementById("countdown-done")?.classList.remove("hidden");
+      return;
+    }
+
+    const days  = Math.floor(diff / 86400000);
+    const hours = Math.floor((diff % 86400000) / 3600000);
+    const mins  = Math.floor((diff % 3600000) / 60000);
+    const secs  = Math.floor((diff % 60000) / 1000);
+
+    const pad = (n: number) => String(n).padStart(2, "0");
+    (document.getElementById("cd-días") as HTMLElement).textContent  = String(days);
+    (document.getElementById("cd-horas") as HTMLElement).textContent = pad(hours);
+    (document.getElementById("cd-min") as HTMLElement).textContent   = pad(mins);
+    (document.getElementById("cd-seg") as HTMLElement).textContent   = pad(secs);
+  }
+
+  update();
+  setInterval(update, 1000);
+</script>
