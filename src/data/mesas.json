@@ -1,0 +1,28 @@
+{
+  "mesas": [
+    {
+      "id": 1,
+      "nombre": "Mesa 1",
+      "lado1": ["María", "Javi", "Rocío", "David", "Portal", "Cristina", "Josete"],
+      "lado2": ["Alejandro", "Tomás", "María", "Nuria", "Antonio", "Isabel", "Javier"]
+    },
+    {
+      "id": 2,
+      "nombre": "Mesa 2",
+      "lado1": ["Javier", "Bea", "Jesús", "Patricia", "Héctor", "Bisa Juli"],
+      "lado2": ["Marga", "Luis", "Antonio", "Mª Antonia", "María", "Bisa Puri"]
+    },
+    {
+      "id": 3,
+      "nombre": "Mesa 3",
+      "lado1": ["Nieves", "Mari", "Jesús", "Manolo", "Pilar", "Juli", "José"],
+      "lado2": ["Marina", "Puri", "Juli", "Ángel", "Laura", "Óscar", "Jesús"]
+    },
+    {
+      "id": "ninos",
+      "nombre": "Mesa de los Niños",
+      "lado1": [],
+      "lado2": []
+    }
+  ]
+}

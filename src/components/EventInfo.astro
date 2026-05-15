@@ -101,6 +101,9 @@ const venueImage = import.meta.env.PUBLIC_MAPS_VENUE_IMAGE_URL;
       <p class="text-gray-warm text-sm mt-4">
         Parking gratuito: <strong class="text-brown-dark font-medium">{parking.name}</strong>
       </p>
+      <p class="text-gray-warm text-sm mt-1">
+        ⚠️ Es el parking <strong class="text-brown-dark font-medium">exterior</strong>, no entréis en el subterráneo. Es gratuito.
+      </p>
       <div class="mt-2 flex flex-wrap gap-2 justify-center sm:justify-start">
         <a
           href={directionsUrl(parking.mapsQuery)}

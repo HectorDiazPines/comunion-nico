@@ -26,6 +26,28 @@ const token = import.meta.env.PUBLIC_EVENT_TOKEN;
     <Hero />
     <Divider />
     <EventInfo />
+    <div class="mesas-link-wrap">
+      <a id="mesas-link" href="/mesas" class="mesas-link">
+        <span class="mesas-link-icon" aria-hidden="true">
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="4" y="14" width="28" height="8" rx="3" fill="#b8860b" opacity="0.15" stroke="#b8860b" stroke-width="1.8"/>
+            <circle cx="8" cy="10" r="2.5" fill="#b8860b" opacity="0.7"/>
+            <circle cx="14" cy="10" r="2.5" fill="#b8860b" opacity="0.7"/>
+            <circle cx="22" cy="10" r="2.5" fill="#b8860b" opacity="0.7"/>
+            <circle cx="28" cy="10" r="2.5" fill="#b8860b" opacity="0.7"/>
+            <circle cx="8" cy="26" r="2.5" fill="#b8860b" opacity="0.7"/>
+            <circle cx="14" cy="26" r="2.5" fill="#b8860b" opacity="0.7"/>
+            <circle cx="22" cy="26" r="2.5" fill="#b8860b" opacity="0.7"/>
+            <circle cx="28" cy="26" r="2.5" fill="#b8860b" opacity="0.7"/>
+          </svg>
+        </span>
+        <span class="mesas-link-text">
+          <span class="mesas-link-title">Distribución de mesas</span>
+          <span class="mesas-link-sub">Ver dónde está tu sitio</span>
+        </span>
+        <span class="mesas-link-arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
     <Divider />
     <CityGuide />
     <Divider />
@@ -44,8 +66,64 @@ const token = import.meta.env.PUBLIC_EVENT_TOKEN;
   if (t === token) {
     loadingEl.classList.add("hidden");
     contentEl.classList.remove("hidden");
+    const mesasLink = document.getElementById("mesas-link");
+    if (mesasLink) mesasLink.href = `/mesas?t=${t}`;
   } else {
     loadingEl.classList.add("hidden");
     deniedEl.classList.remove("hidden");
   }
 </script>
+
+<style>
+  .mesas-link-wrap {
+    padding: 0 0 2rem;
+  }
+
+  .mesas-link {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: linear-gradient(135deg, #fffdf7 0%, #fef5e4 100%);
+    border: 1.5px solid #e8d5a3;
+    border-radius: 16px;
+    padding: 1.1rem 1.4rem;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 2px 12px rgba(184, 134, 11, 0.08);
+    transition: box-shadow 0.2s, border-color 0.2s;
+  }
+
+  .mesas-link:hover {
+    box-shadow: 0 4px 20px rgba(184, 134, 11, 0.18);
+    border-color: #b8860b;
+  }
+
+  .mesas-link-icon {
+    flex-shrink: 0;
+  }
+
+  .mesas-link-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  .mesas-link-title {
+    font-family: var(--font-heading, Georgia, serif);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #3d260d;
+  }
+
+  .mesas-link-sub {
+    font-size: 0.82rem;
+    color: #78716c;
+  }
+
+  .mesas-link-arrow {
+    font-size: 1.2rem;
+    color: #b8860b;
+    flex-shrink: 0;
+  }
+</style>
